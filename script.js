@@ -28,7 +28,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const themeToggleBtn = document.getElementById('theme-toggle');
     if (themeToggleBtn) {
         const currentTheme = localStorage.getItem('theme');
-        if (currentTheme === 'dark') {
+        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        
+        if (currentTheme === 'dark' || (!currentTheme && prefersDark)) {
             document.documentElement.setAttribute('data-theme', 'dark');
             themeToggleBtn.textContent = '☀';
         }
