@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Scegli la tua carta</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Schermata di Selezione -->
+  <div id="selection-screen" class="screen">
+    <!-- Questo è il titolo con il trigger segreto (5 tap) -->
+    <h1 id="secret-title">Inserisci la tua carta</h1>
+    
+    <div id="suit-selection" class="selection-step">
+      <p>Scegli il Seme</p>
+      <div class="suits-grid">
+        <button class="suit-btn" data-suit="H"><span style="color: red;">♥</span> Cuori</button>
+        <button class="suit-btn" data-suit="D"><span style="color: red;">♦</span> Quadri</button>
+        <button class="suit-btn" data-suit="C"><span>♣</span> Fiori</button>
+        <button class="suit-btn" data-suit="S"><span>♠</span> Picche</button>
+      </div>
+    </div>
+
+    <div id="value-selection" class="selection-step hidden">
+      <p>Scegli il Valore</p>
+      <div class="values-grid">
+        <button class="val-btn" data-val="A">A</button>
+        <button class="val-btn" data-val="2">2</button>
+        <button class="val-btn" data-val="3">3</button>
+        <button class="val-btn" data-val="4">4</button>
+        <button class="val-btn" data-val="5">5</button>
+        <button class="val-btn" data-val="6">6</button>
+        <button class="val-btn" data-val="7">7</button>
+        <button class="val-btn" data-val="8">8</button>
+        <button class="val-btn" data-val="9">9</button>
+        <button class="val-btn" data-val="0">10</button>
+        <button class="val-btn" data-val="J">J</button>
+        <button class="val-btn" data-val="Q">Q</button>
+        <button class="val-btn" data-val="K">K</button>
+      </div>
+      <button id="btn-back-suit" class="back-btn">Indietro</button>
+    </div>
+  </div>
+
+  <!-- Schermata Principale (Svela) -->
+  <div id="app-screen" class="screen hidden">
+    <div id="status-bar">
+      <div id="clock">12:00:11</div>
+      <div id="battery">
+        <svg viewBox="0 0 24 24" fill="white" width="24px" height="24px">
+          <path d="M16 20H8V6H16M16.67 4H15V2H9V4H7.33C6.6 4 6 4.6 6 5.33V20.67C6 21.4 6.6 22 7.33 22H16.67C17.4 22 18 21.4 18 20.67V5.33C18 4.6 17.4 4 16.67 4Z"></path>
+        </svg>
+      </div>
+    </div>
+
+    <div class="center-content">
+      <!-- Un'area estesa invisibile per il trucco -->
+      <div id="extract-area">
+        <button id="btn-extract">Svela la tua carta</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Schermata Risultato -->
+  <div id="result-screen" class="screen hidden">
+    <img id="card-image" src="" alt="Carta Rivelata">
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
