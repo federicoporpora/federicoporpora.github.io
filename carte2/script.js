@@ -10,6 +10,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const clockElement = document.getElementById('clock');
   const cardImage = document.getElementById('card-image');
   const btnBackSuit = document.getElementById('btn-back-suit');
+  const btnBackApp = document.getElementById('btn-back-app');
 
   let fakeSeconds = 11;
   let magicMode = false;
@@ -139,7 +140,20 @@ document.addEventListener('DOMContentLoaded', () => {
     resultScreen.classList.remove('hidden');
   });
 
-  // Torna indietro
+  // Pulsante per tornare indietro dalla schermata "Svela"
+  btnBackApp.addEventListener('click', () => {
+    appScreen.classList.add('hidden');
+    selectionScreen.classList.remove('hidden');
+    
+    // Resetta lo stato di selezione
+    valueSelection.classList.add('hidden');
+    suitSelection.classList.remove('hidden');
+    chosenSuit = '';
+    chosenValue = '';
+    magicMode = false;
+  });
+
+  // Torna indietro dalla carta svelata
   resultScreen.addEventListener('click', () => {
     resultScreen.classList.add('hidden');
     appScreen.classList.remove('hidden');
