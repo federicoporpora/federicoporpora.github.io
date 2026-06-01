@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Estrattore Casuale di Carte</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Schermata Iniziale (visibile all'inizio) -->
+  <div id="start-screen" class="screen">
+    <h1>Estrattore Casuale di Carte</h1>
+    <p>Premi il pulsante per avviare l'estrattore.</p>
+    <button id="btn-start">Inizia</button>
+  </div>
+
+  <!-- Schermata Principale (Estrattore) -->
+  <div id="app-screen" class="screen hidden">
+    <!-- Barra di stato superiore (orologio e batteria) -->
+    <div id="status-bar">
+      <div id="clock">12:00:11</div>
+      <div id="battery">
+        <svg viewBox="0 0 24 24" fill="white" width="24px" height="24px">
+          <path d="M16 20H8V6H16M16.67 4H15V2H9V4H7.33C6.6 4 6 4.6 6 5.33V20.67C6 21.4 6.6 22 7.33 22H16.67C17.4 22 18 21.4 18 20.67V5.33C18 4.6 17.4 4 16.67 4Z"></path>
+        </svg>
+      </div>
+    </div>
+
+    <!-- Area Centrale -->
+    <div class="center-content">
+      <p class="instruction-text">Clicca il bottone per estrarre una carta</p>
+      <!-- Il bottone ha un'area invisibile attorno a sé per catturare i click leggermente fuori -->
+      <div id="extract-area">
+        <button id="btn-extract">Estrai Carta</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Schermata Risultato (mostra la carta) -->
+  <div id="result-screen" class="screen hidden">
+    <img id="card-image" src="" alt="Carta Estratta">
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
