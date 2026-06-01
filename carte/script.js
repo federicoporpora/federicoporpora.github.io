@@ -9,6 +9,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
   let fakeSeconds = 11;
 
+  // Precarica tutte le immagini per farle apparire all'istante
+  const preloadSuits = ['H', 'D', 'C', 'S'];
+  const preloadValues = ['A', '2', '3', '4', '5', '6', '7', '8', '9', '0', 'J', 'Q', 'K'];
+  preloadValues.forEach(v => {
+    preloadSuits.forEach(s => {
+      const img = new Image();
+      img.src = `cards/${v}${s}.png`;
+    });
+  });
+
   // Funzione per aggiornare l'orologio
   function updateClock() {
     const now = new Date();
@@ -99,10 +109,11 @@ document.addEventListener('DOMContentLoaded', () => {
   
   // Opzionale: Cliccando sulla carta si ricarica per farlo di nuovo?
   resultScreen.addEventListener('click', () => {
-    // Toglie il fullscreen e ricarica, oppure torna alla schermata di estrazione
-    // Per ora torniamo alla schermata di estrazione
+    // Torna alla schermata di estrazione
     resultScreen.classList.add('hidden');
     appScreen.classList.remove('hidden');
+    // Svuota l'immagine in modo che la prossima estrazione non mostri la carta precedente
+    cardImage.src = '';
   });
 
 });
