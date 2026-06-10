@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alta Via n.1 - Estate</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #0f172a;
+            --card-bg: rgba(30, 41, 59, 0.7);
+            --primary: #3b82f6;
+            --primary-hover: #2563eb;
+            --text-main: #f8fafc;
+            --text-muted: #cbd5e1;
+            --accent: #10b981;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Outfit', sans-serif;
+            background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%);
+            color: var(--text-main);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 50px;
+            animation: fadeInDown 0.8s ease;
+        }
+
+        h1 {
+            font-size: 3rem;
+            margin-bottom: 10px;
+            background: linear-gradient(to right, #60a5fa, #a78bfa);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .transport-card {
+            background: var(--card-bg);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 30px;
+            margin-bottom: 40px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            animation: fadeInUp 0.8s ease;
+        }
+
+        .transport-card h2 {
+            margin-top: 0;
+            color: #a78bfa;
+            font-size: 1.8rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .transport-steps {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            position: relative;
+        }
+        
+        .transport-steps::before {
+            content: '';
+            position: absolute;
+            left: 11px;
+            top: 10px;
+            bottom: 10px;
+            width: 2px;
+            background: rgba(255,255,255,0.2);
+        }
+
+        .transport-steps li {
+            position: relative;
+            padding-left: 40px;
+            margin-bottom: 25px;
+            line-height: 1.5;
+        }
+
+        .transport-steps li:last-child {
+            margin-bottom: 0;
+        }
+
+        .transport-steps li::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 5px;
+            width: 24px;
+            height: 24px;
+            background: var(--primary);
+            border-radius: 50%;
+            box-shadow: 0 0 10px var(--primary);
+            border: 4px solid var(--bg-color);
+        }
+
+        .time {
+            font-weight: 800;
+            color: #60a5fa;
+        }
+        .train {
+            font-weight: 600;
+            color: #fca5a5;
+        }
+        .bus-link {
+            color: var(--accent);
+            text-decoration: none;
+            border-bottom: 1px dashed var(--accent);
+            transition: all 0.3s;
+        }
+        .bus-link:hover {
+            color: #34d399;
+            border-bottom-style: solid;
+        }
+
+        .tabs {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+
+        .tab-btn {
+            background: rgba(255,255,255,0.05);
+            border: 2px solid transparent;
+            color: white;
+            padding: 15px 40px;
+            border-radius: 30px;
+            font-size: 1.2rem;
+            font-family: 'Outfit', sans-serif;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(5px);
+        }
+
+        .tab-btn:hover {
+            background: rgba(255,255,255,0.1);
+            transform: translateY(-2px);
+        }
+
+        .tab-btn.active {
+            background: linear-gradient(135deg, var(--primary), #8b5cf6);
+            border-color: rgba(255,255,255,0.2);
+            box-shadow: 0 10px 20px rgba(59, 130, 246, 0.4);
+        }
+
+        .variant-content {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .variant-content.active {
+            display: block;
+        }
+
+        .variant-desc {
+            background: var(--card-bg);
+            border-left: 4px solid var(--accent);
+            padding: 20px 25px;
+            border-radius: 0 12px 12px 0;
+            margin-bottom: 30px;
+            font-size: 1.1rem;
+            line-height: 1.6;
+        }
+
+        .stage-card {
+            background: var(--card-bg);
+            border-radius: 16px;
+            overflow: hidden;
+            margin-bottom: 30px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .stage-header {
+            padding: 20px;
+            background: rgba(255,255,255,0.03);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .stage-header h3 {
+            margin: 0;
+            font-size: 1.4rem;
+        }
+
+        .download-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(16, 185, 129, 0.2);
+            color: #34d399;
+            text-decoration: none;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            transition: all 0.3s;
+            border: 1px solid rgba(16, 185, 129, 0.3);
+        }
+
+        .download-btn:hover {
+            background: rgba(16, 185, 129, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .iframe-container {
+            width: 100%;
+        }
+        
+        .iframe-container iframe {
+            display: block;
+            border: none;
+        }
+
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        .tot-download {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .tot-download .download-btn {
+            font-size: 1.1rem;
+            padding: 12px 24px;
+            background: rgba(59, 130, 246, 0.2);
+            color: #93c5fd;
+            border-color: rgba(59, 130, 246, 0.4);
+        }
+        
+        .tot-download .download-btn:hover {
+            background: rgba(59, 130, 246, 0.3);
+        }
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Alta Via n.1</h1>
+            <p>I dettagli e le varianti per il nostro cammino</p>
+        </header>
+
+        <div class="transport-card">
+            <h2>🚇 Il Viaggio (9 Agosto)</h2>
+            <ul class="transport-steps">
+                <li><span class="time">07:32</span> - Partenza da <strong>Arezzo</strong> con <span class="train">Intercity 580</span>. Arrivo a <strong>Firenze SMN</strong>.</li>
+                <li>Cambio di 30 minuti a Firenze SMN.</li>
+                <li><span class="time">08:36</span> - Partenza da Firenze SMN con <span class="train">Frecciarossa 8502</span> fino a <strong>Bolzano</strong>.</li>
+                <li>Cambio di 6 minuti a Bolzano.</li>
+                <li><span class="time">12:02</span> - Partenza da Bolzano con <span class="train">Regionale 17154</span> fino a <strong>Fortezza Franzenfeste</strong>.</li>
+                <li>Cambio di 7 minuti a Fortezza Franzenfeste.</li>
+                <li>Partenza con <span class="train">Regionale 1863</span> fino a <strong>Monguelfo</strong>, arrivo previsto alle <span class="time">13:51</span>.</li>
+                <li>Dalla stazione autobus numero <strong>439</strong> fino al <strong>Lago di Braies</strong>. <br><em>Da prenotare su: <a href="http://www.prags.bz/it/offer/detail/navetta-lago-di-braies_21" target="_blank" class="bus-link">www.prags.bz</a></em></li>
+                <li>Arrivo al Lago di Braies e partenza immediata per la prima breve tappa!</li>
+            </ul>
+        </div>
+
+        <div class="tabs">
+            <button class="tab-btn active" onclick="switchTab(1)">Variante 1</button>
+            <button class="tab-btn" onclick="switchTab(2)">Variante 2</button>
+        </div>
+
+        <div id="var1" class="variant-content active">
+            <div class="variant-desc">
+                <strong>Variante 1:</strong> Salta il giro intorno a Tofana di Rozes (indicato a pagina 28 del PDF come uno dei tratti più belli dell'alta via) ma spalma molto meglio i chilometri nel corso del viaggio. L'arrivo finale è previsto a piedi fino a <strong>Belluno</strong> in cui dormiamo una notte (16-17 agosto) e il giorno dopo partiamo con calma.
+            </div>
+            
+            <div class="tot-download">
+                <a href="gpx/AV1-TOT.gpx" download class="download-btn">
+                    <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="margin-right: 5px; vertical-align: middle;"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
+                    Scarica GPX Totale (Variante 1)
+                </a>
+            </div>
+
+            <!-- Tappe Variante 1 -->
+            <div class="stage-card">
+                <div class="stage-header">
+                    <h3>Tappa 1</h3>
+                    <a href="gpx/AV1-TAPPA-1-Braies-Sennes.gpx" download class="download-btn">Scarica GPX</a>
+                </div>
+                <div class="iframe-container">
+                    <iframe src="https://www.komoot.com/tour/3027857173/embed?share_token=a2SCrNjfznxM62hj2CW6NyesIXx7IenUDGI9vxfBNJytvUUKT6&hl=it&layout=classic&profile=1" width="100%" height="700" frameborder="0" scrolling="no"></iframe>
+                </div>
+            </div>
+
+            <div class="stage-card">
+                <div class="stage-header">
+                    <h3>Tappa 2</h3>
+                    <a href="gpx/AV1-TAPPA-2-Sennes-LagoLagazuoi.gpx" download class="download-btn">Scarica GPX</a>
+                </div>
+                <div class="iframe-container">
+                    <iframe src="https://www.komoot.com/tour/3027857343/embed?share_token=a15LOtpx4l3zkP9cxi9ZAS6z4vShhySEk72uCTPtK3MIhR6W4N&hl=it&layout=classic&profile=1" width="100%" height="700" frameborder="0" scrolling="no"></iframe>
+                </div>
+            </div>
+
+            <div class="stage-card">
+                <div class="stage-header">
+                    <h3>Tappa 3</h3>
+                    <a href="gpx/AV1-TAPPA-3-LagoLagazuoi-LagoFedera.gpx" download class="download-btn">Scarica GPX</a>
+                </div>
+                <div class="iframe-container">
+                    <iframe src="https://www.komoot.com/tour/3027857682/embed?share_token=aQST6qQEfv6AEtZs6BWuxdnw7f1KhGT7I35WCP6I12X2cKgyEo&hl=it&layout=classic&profile=1" width="100%" height="700" frameborder="0" scrolling="no"></iframe>
+                </div>
+            </div>
+
+            <div class="stage-card">
+                <div class="stage-header">
+                    <h3>Tappa 4</h3>
+                    <a href="gpx/AV1-TAPPA-4-LagoFedera-RifugioPalafavera.gpx" download class="download-btn">Scarica GPX</a>
+                </div>
+                <div class="iframe-container">
+                    <iframe src="https://www.komoot.com/tour/3027857963/embed?share_token=alo6HYPrpuO6QzYvH8m1ZBAVVNUuMAtK6Vz91aGMtBwX75M5l5&hl=it&layout=classic&profile=1" width="100%" height="700" frameborder="0" scrolling="no"></iframe>
+                </div>
+            </div>
+
+            <div class="stage-card">
+                <div class="stage-header">
+                    <h3>Tappa 5</h3>
+                    <a href="gpx/AV1-TAPPA-5-RifugioPalafavera-RifugioCarestiato.gpx" download class="download-btn">Scarica GPX</a>
+                </div>
+                <div class="iframe-container">
+                    <iframe src="https://www.komoot.com/tour/3027858319/embed?share_token=aR37DDvvIDE89heRos18QxZo34flJBWZlG43MrxhS1wupuKGvF&hl=it&layout=classic&profile=1" width="100%" height="700" frameborder="0" scrolling="no"></iframe>
+                </div>
+            </div>
+
+            <div class="stage-card">
+                <div class="stage-header">
+                    <h3>Tappa 6</h3>
+                    <a href="gpx/AV1-TAPPA-6-RifugioCarestiato-RifugioPiandeFontana.gpx" download class="download-btn">Scarica GPX</a>
+                </div>
+                <div class="iframe-container">
+                    <iframe src="https://www.komoot.com/tour/3027858538/embed?share_token=afCfVWlopmx0pEpRfEiVuIGNc8YNvB3PrL6UEXH3W5W36ACRZV&hl=it&layout=classic&profile=1" width="100%" height="700" frameborder="0" scrolling="no"></iframe>
+                </div>
+            </div>
+
+            <div class="stage-card">
+                <div class="stage-header">
+                    <h3>Tappa 7</h3>
+                    <a href="gpx/AV1-TAPPA-7-RifugioPiandeFontana-Rifugio7Alpini.gpx" download class="download-btn">Scarica GPX</a>
+                </div>
+                <div class="iframe-container">
+                    <iframe src="https://www.komoot.com/tour/3027858730/embed?share_token=ab14xLXVWvq9WzlDqfqXpF5bhBCXLJJ1380hWtmpstuHDwrSOx&hl=it&layout=classic&profile=1" width="100%" height="700" frameborder="0" scrolling="no"></iframe>
+                </div>
+            </div>
+
+            <div class="stage-card">
+                <div class="stage-header">
+                    <h3>Tappa 8</h3>
+                    <a href="gpx/AV1-TAPPA-8-Rifugio7Alpini-Belluno.gpx" download class="download-btn">Scarica GPX</a>
+                </div>
+                <div class="iframe-container">
+                    <iframe src="https://www.komoot.com/tour/3027859034/embed?share_token=auJg2fyPmYONMUHRh94ow6BbN2e49hdcyO7SwzVJTCnVBC3xqJ&hl=it&layout=classic&profile=1" width="100%" height="700" frameborder="0" scrolling="no"></iframe>
+                </div>
+            </div>
+        </div>
+
+        <div id="var2" class="variant-content">
+            <div class="variant-desc">
+                <strong>Variante 2:</strong> Include il giro intorno a Tofana di Rozes con una tappa bella lunga di 22.8km (ma se riusciamo i giorni prima andiamo un po' più lunghi e proviamo ad accorciarla). Le tappe sono distribuite un po' peggio a livello di chilometri. Finisce non a Belluno ma alla <strong>fermata del bus di La Pissa</strong>, in cui prendiamo un autobus per Belluno, dormiamo in città e partiamo il giorno dopo.
+            </div>
+
+            <!-- Tappe Variante 2 -->
+            <div class="stage-card">
+                <div class="stage-header">
+                    <h3>Tappa 1</h3>
+                    <a href="gpx/AV1-TAPPA-1-Braies-Sennes.gpx" download class="download-btn">Scarica GPX</a>
+                </div>
+                <div class="iframe-container">
+                    <iframe src="https://www.komoot.com/tour/3027857173/embed?share_token=a2SCrNjfznxM62hj2CW6NyesIXx7IenUDGI9vxfBNJytvUUKT6&hl=it&layout=classic&profile=1" width="100%" height="700" frameborder="0" scrolling="no"></iframe>
+                </div>
+            </div>
+
+            <div class="stage-card">
+                <div class="stage-header">
+                    <h3>Tappa 2</h3>
+                    <a href="gpx/AV1-TAPPA-2-Sennes-LagoLagazuoi.gpx" download class="download-btn">Scarica GPX</a>
+                </div>
+                <div class="iframe-container">
+                    <iframe src="https://www.komoot.com/tour/3027857343/embed?share_token=a15LOtpx4l3zkP9cxi9ZAS6z4vShhySEk72uCTPtK3MIhR6W4N&hl=it&layout=classic&profile=1" width="100%" height="700" frameborder="0" scrolling="no"></iframe>
+                </div>
+            </div>
+
+            <div class="stage-card">
+                <div class="stage-header">
+                    <h3>Tappa 3</h3>
+                    <a href="gpx/AV1(2)-TAPPA-3-LagoLagazuoi-RifugioScoiattoli.gpx" download class="download-btn">Scarica GPX</a>
+                </div>
+                <div class="iframe-container">
+                    <iframe src="https://www.komoot.com/tour/3027861139/embed?share_token=alEVgZFMKk5hCLMiIWEmcGPwjPBFLqKRSy3wbqCgCExIFMGHp7&hl=it&layout=classic&profile=1" width="100%" height="700" frameborder="0" scrolling="no"></iframe>
+                </div>
+            </div>
+
+            <div class="stage-card">
+                <div class="stage-header">
+                    <h3>Tappa 4</h3>
+                    <a href="gpx/AV1(2)-TAPPA-4-RifugioScoiattoli-RifugioCitt%C3%A0diFiume.gpx" download class="download-btn">Scarica GPX</a>
+                </div>
+                <div class="iframe-container">
+                    <iframe src="https://www.komoot.com/tour/3027861371/embed?share_token=atXS2t88cOUurFQqVXGA26f9zUjz38TbJ952HuJszzbvRFnOoT&hl=it&layout=classic&profile=1" width="100%" height="700" frameborder="0" scrolling="no"></iframe>
+                </div>
+            </div>
+
+            <div class="stage-card">
+                <div class="stage-header">
+                    <h3>Tappa 5</h3>
+                    <a href="gpx/AV1(2)-TAPPA-5-RifugioCitt%C3%A0diFiume-RifugioPalafavera.gpx" download class="download-btn">Scarica GPX</a>
+                </div>
+                <div class="iframe-container">
+                    <iframe src="https://www.komoot.com/tour/3027862603/embed?share_token=appB2frBwY4tMtz8CDE2Jn5d3A2zI36YZJZ7xGPpmB7QOGg5ul&hl=it&layout=classic&profile=1" width="100%" height="700" frameborder="0" scrolling="no"></iframe>
+                </div>
+            </div>
+
+            <div class="stage-card">
+                <div class="stage-header">
+                    <h3>Tappa 6</h3>
+                    <a href="gpx/AV1(2)-TAPPA-6-RifugioPalafavera-RifugioCarestiato.gpx" download class="download-btn">Scarica GPX</a>
+                </div>
+                <div class="iframe-container">
+                    <iframe src="https://www.komoot.com/tour/3027863376/embed?share_token=aaHJ8dd1Nq6PW4JCGnHFYvHSwUW8zswySqYiX2cn3cC6siB1vB&hl=it&layout=classic&profile=1" width="100%" height="700" frameborder="0" scrolling="no"></iframe>
+                </div>
+            </div>
+
+            <div class="stage-card">
+                <div class="stage-header">
+                    <h3>Tappa 7</h3>
+                    <a href="gpx/AV1(2)-TAPPA-7-RifugioCarestiato-RifugioSommarivaalPramperet.gpx" download class="download-btn">Scarica GPX</a>
+                </div>
+                <div class="iframe-container">
+                    <iframe src="https://www.komoot.com/tour/3027863743/embed?share_token=a6QyMJOOZoFdpGGz3SBDGkf8dH8UtG7uI1XEc5ai4ZCv80OJzD&hl=it&layout=classic&profile=1" width="100%" height="700" frameborder="0" scrolling="no"></iframe>
+                </div>
+            </div>
+
+            <div class="stage-card">
+                <div class="stage-header">
+                    <h3>Tappa 8</h3>
+                    <a href="gpx/AV1(2)-TAPPA-8-RifugioSommarivaalPramperet-FermatadelBusLaPissa.gpx" download class="download-btn">Scarica GPX</a>
+                </div>
+                <div class="iframe-container">
+                    <iframe src="https://www.komoot.com/tour/3027864125/embed?share_token=aHs5mBgx02YffsyEIGOGdq7AKRY54KXpGCjOMfDbIaJLd9Q7NH&hl=it&layout=classic&profile=1" width="100%" height="700" frameborder="0" scrolling="no"></iframe>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-btn').forEach((btn, index) => {
+                if (index + 1 === tabId) {
+                    btn.classList.add('active');
+                } else {
+                    btn.classList.remove('active');
+                }
+            });
+
+            document.querySelectorAll('.variant-content').forEach((content, index) => {
+                if (index + 1 === tabId) {
+                    content.classList.add('active');
+                } else {
+                    content.classList.remove('active');
+                }
+            });
+        }
+    </script>
+</body>
+</html>
