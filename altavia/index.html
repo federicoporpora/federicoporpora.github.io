@@ -295,12 +295,20 @@
 
         .journey-scroll::-webkit-scrollbar { display: none; }
 
+        /* Desktop: JS controls scrollLeft, hide native scrollbar */
+        @media (min-width: 901px) {
+            .journey-scroll {
+                overflow-x: hidden;
+                scroll-snap-type: none;
+            }
+        }
+
         .journey-stop {
             min-width: 320px;
             max-width: 360px;
             flex-shrink: 0;
             scroll-snap-align: start;
-            padding: 2.5rem 2rem;
+            padding: 1.5rem 2rem;
             position: relative;
             border-right: 1px dashed var(--sage-light);
         }
@@ -379,7 +387,7 @@
             text-align: center;
             margin-top: 1.5rem;
             font-family: 'Space Mono', monospace;
-            font-size: 0.7rem;
+            font-size: 1.1rem;
             letter-spacing: 0.15em;
             text-transform: uppercase;
             color: var(--ink-muted);
@@ -869,6 +877,7 @@
             <h2 class="chapter-title">Il <em>Viaggio</em></h2>
         </div>
 
+
         <div class="journey-scroll-wrapper reveal">
             <div class="journey-scroll" id="journey-scroll">
                 <div class="journey-stop">
@@ -922,6 +931,7 @@
             </div>
             <div class="scroll-hint" id="scroll-hint">← scorri →</div>
         </div>
+
     </section>
 
     <!-- ═════════ LE TAPPE ═════════ -->
@@ -1254,11 +1264,85 @@
     const journeyBar = document.getElementById('journey-bar');
     const scrollHint = document.getElementById('scroll-hint');
 
+    // Mobile: native horizontal scroll updates the bar
     journeyScroll.addEventListener('scroll', () => {
-        const pct = journeyScroll.scrollLeft / (journeyScroll.scrollWidth - journeyScroll.clientWidth) * 100;
+        const maxScroll = journeyScroll.scrollWidth - journeyScroll.clientWidth;
+        if (maxScroll <= 0) return;
+        const pct = (journeyScroll.scrollLeft / maxScroll) * 100;
         journeyBar.style.width = pct + '%';
         if (pct > 5) scrollHint.style.opacity = '0';
     });
+
+    // ─── Desktop: wheel-hijack for horizontal scroll ───
+    (function () {
+        const wrapper = document.querySelector('.journey-scroll-wrapper');
+        if (!wrapper) return;
+
+        const isDesktop = () => window.innerWidth > 900;
+
+        function updateBar() {
+            const maxScroll = journeyScroll.scrollWidth - journeyScroll.clientWidth;
+            if (maxScroll <= 0) return;
+            const pct = (journeyScroll.scrollLeft / maxScroll) * 100;
+            journeyBar.style.width = pct + '%';
+            if (pct > 5) scrollHint.style.opacity = '0';
+            else scrollHint.style.opacity = '';
+        }
+
+        let targetScroll = 0;
+        let isAnimating = false;
+
+        function smoothAnimate() {
+            const current = journeyScroll.scrollLeft;
+            const diff = targetScroll - current;
+
+            if (Math.abs(diff) < 0.5) {
+                journeyScroll.scrollLeft = targetScroll;
+                isAnimating = false;
+                updateBar();
+                return;
+            }
+
+            journeyScroll.scrollLeft += diff * 0.18;
+            updateBar();
+            requestAnimationFrame(smoothAnimate);
+        }
+
+        window.addEventListener('wheel', (e) => {
+            if (!isDesktop()) return;
+
+            const rect = wrapper.getBoundingClientRect();
+            const maxScroll = journeyScroll.scrollWidth - journeyScroll.clientWidth;
+            if (maxScroll <= 0) return;
+
+            // Check if the journey wrapper is visible in a comfortable reading position
+            const inZone = rect.top < window.innerHeight * 0.6 && rect.bottom > window.innerHeight * 0.15;
+            if (!inZone) return;
+
+            const atStart = targetScroll <= 0;
+            const atEnd = targetScroll >= maxScroll - 1;
+            const scrollingDown = e.deltaY > 0;
+            const scrollingUp = e.deltaY < 0;
+
+            // Scrolling down and horizontal not finished → hijack
+            if (scrollingDown && !atEnd) {
+                e.preventDefault();
+                targetScroll = Math.min(maxScroll, targetScroll + Math.abs(e.deltaY) * 3);
+                if (!isAnimating) { isAnimating = true; requestAnimationFrame(smoothAnimate); }
+                return;
+            }
+
+            // Scrolling up and horizontal not back to start → hijack
+            if (scrollingUp && !atStart) {
+                e.preventDefault();
+                targetScroll = Math.max(0, targetScroll - Math.abs(e.deltaY) * 3);
+                if (!isAnimating) { isAnimating = true; requestAnimationFrame(smoothAnimate); }
+                return;
+            }
+
+            // Otherwise let normal vertical scroll happen
+        }, { passive: false });
+    })();
 
     // ─── Reveal on scroll ───
     function initReveal() {
